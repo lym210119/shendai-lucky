@@ -29,7 +29,7 @@
             href="javascript:void(0);"
             :style="{
               color:
-                !running && allresult.includes(item.key) ? '#ff2200' : '#fff'
+                !running && allresult.includes(item.key) ? '#ff2200' : 'gold'
             }"
           >
             {{ item.name ? item.name : item.key }}
@@ -105,9 +105,9 @@
     />
     <Result :visible.sync="showResult"></Result>
 
-    <span class="copy-right">
+    <!-- <span class="copy-right">
       Copyright©zhangyongfeng5350@gmail.com
-    </span>
+    </span> -->
 
     <audio
       id="audiobg"
@@ -124,6 +124,7 @@
   </div>
 </template>
 <script>
+import bgImg from '@/assets/bg2.jpg';
 import LotteryConfig from '@/components/LotteryConfig';
 import Publicity from '@/components/Publicity';
 import Tool from '@/components/Tool';
@@ -205,7 +206,7 @@ export default {
     },
     getImgBg() {
       var bgUrl = this.$store.state.bgUrl
-      return bgUrl ? bgUrl : 'https://source.unsplash.com/random/1920x1080';
+      return bgUrl ? bgUrl : bgImg;
     }
   },
   created() {
@@ -269,8 +270,13 @@ export default {
       const fileList = e.target.files;
       console.log(fileList);
       const objectURL = URL.createObjectURL(fileList[0]);
+      const reader = new FileReader();
+      reader.readAsDataURL(fileList[0]);
       console.log(objectURL);
-      this.$store.commit('setBgUrl', objectURL);
+      reader.onload = () => {
+        console.log(reader.result);
+        this.$store.commit('setBgUrl', reader.result);
+      }
     },
     playHandler() {
       this.audioPlaying = true;
@@ -384,7 +390,7 @@ export default {
 #root {
   height: 100%;
   position: relative;
-  // background-image: url('./assets/bg1.jpg');
+  background-image: url('./assets/bg2.jpg');
   background-size: 100% 100%;
   background-position: center center;
   background-repeat: no-repeat;

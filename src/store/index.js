@@ -32,11 +32,12 @@ export default new Vuex.Store({
     newLottery: [],
     list: [],
     photos: [],
-    bgUrl: ''
+    bgUrl: localStorage.getItem('bg')
   },
   mutations: {
     setBgUrl(state, bgUrl) {
       state.bgUrl = bgUrl;
+      setData('bg', state.bgUrl);
     },
     setClearConfig(state) {
       state.config = {
