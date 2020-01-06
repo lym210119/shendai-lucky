@@ -1,5 +1,5 @@
 <template>
-  <div id="root">
+  <div id="root" :style="{backgroundImage: 'url('+ getImgBg +')'}">
     <header>
       <Publicity v-show="!running" />
       <el-button class="res" type="text" @click="showResult = true">
@@ -7,6 +7,18 @@
       </el-button>
       <el-button class="con" type="text" @click="showConfig = true">
         抽奖配置
+      </el-button>
+      <el-button class="bg" type="text">
+
+          更换背景
+          <input
+            ref="uploadinput"
+            class="uploadBG"
+            type="file"
+            accept=".jpg,.png"
+            @change="inputChangeBG"
+          />
+
       </el-button>
     </header>
     <div id="main" :class="{ mask: showRes }"></div>
@@ -190,6 +202,10 @@ export default {
     },
     photos() {
       return this.$store.state.photos;
+    },
+    getImgBg() {
+      var bgUrl = this.$store.state.bgUrl
+      return bgUrl ? bgUrl : 'https://source.unsplash.com/random/1920x1080';
     }
   },
   created() {
@@ -249,6 +265,13 @@ export default {
     }, 1000);
   },
   methods: {
+    inputChangeBG(e) {
+      const fileList = e.target.files;
+      console.log(fileList);
+      const objectURL = URL.createObjectURL(fileList[0]);
+      console.log(objectURL);
+      this.$store.commit('setBgUrl', objectURL);
+    },
     playHandler() {
       this.audioPlaying = true;
     },
@@ -361,7 +384,7 @@ export default {
 #root {
   height: 100%;
   position: relative;
-  background-image: url('./assets/bg1.jpg');
+  // background-image: url('./assets/bg1.jpg');
   background-size: 100% 100%;
   background-position: center center;
   background-repeat: no-repeat;
@@ -384,6 +407,17 @@ export default {
       }
       &.res {
         right: 100px;
+      }
+      &.bg {
+        right: 200px;
+        .uploadBG {
+          opacity: 0;
+          position: absolute;
+          right: 0;
+          width: 100%;
+          // bottom: 0;
+          // top: 0;
+        }
       }
     }
   }
@@ -473,4 +507,5 @@ export default {
     }
   }
 }
+
 </style>

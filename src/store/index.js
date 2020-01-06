@@ -31,9 +31,13 @@ export default new Vuex.Store({
     },
     newLottery: [],
     list: [],
-    photos: []
+    photos: [],
+    bgUrl: ''
   },
   mutations: {
+    setBgUrl(state, bgUrl) {
+      state.bgUrl = bgUrl;
+    },
     setClearConfig(state) {
       state.config = {
         name: '年会抽奖',
